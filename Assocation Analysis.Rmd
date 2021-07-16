@@ -1,0 +1,107 @@
+---
+title: "Association Analysis"
+author: "Alex"
+date: "15/07/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+# Associative Analysis
+
+
+
+# Loading in our Library
+
+```{r}
+# Loading the arules library
+#
+library(arules)
+```
+
+
+# Loading in our data set
+```{r}
+# we will require while working with models of association rules
+# ---
+# 
+path <-"http://bit.ly/SupermarketDatasetII"
+
+Transactions<-read.transactions(path, sep = ",")
+Transactions
+```
+
+# Verifying the object's class
+
+```{r}
+
+class(Transactions)
+```
+
+# Previewing our first 5 transactions
+```{r}
+
+#
+inspect(Transactions[1:5])
+```
+
+# Generating a summary of the transaction dataset
+
+```{r}
+
+summary(Transactions)
+```
+
+# Exploring the frequency of some articles 
+```{r}
+itemFrequency(Transactions[, 8:10],type = "absolute")
+round(itemFrequency(Transactions[, 8:10],type = "relative")*100,2)
+```
+# Producing a chart of frequencies and fitering 
+
+```{r}
+
+par(mfrow = c(1, 2))
+
+# plot the frequency of items
+itemFrequencyPlot(Transactions, topN = 10,col="darkgreen")
+itemFrequencyPlot(Transactions, support = 0.1,col="darkred")
+```
+# Building a model based on association rules
+
+```{r}
+
+rules <- apriori (Transactions, parameter = list(supp = 0.001, conf = 0.8))
+rules
+
+```
+
+
+
+# Showing the summarry of our model
+```{r}
+ 
+summary(rules)
+```
+
+# Observing rules built in our model
+```{r}
+
+inspect(rules[1:5])
+
+
+```
+
+# Sorting by an increase in confidence
+```{r}
+
+rules<-sort(rules, by="confidence", decreasing=TRUE)
+inspect(rules[1:5])
+
+```
+
+
+
+# Conclusion
+## From the above results, we can clearly state that people who buy french fries, mushroom cream sauce, pasta are 100% likely to buy an escalope.
+## From the above results, we can clearly state that people who buy ground beef, light cream are 100% likely to buy milk.
+

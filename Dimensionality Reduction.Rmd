@@ -1,0 +1,109 @@
+---
+title: "Dimensionality Reduction"
+author: "Alex"
+date: "16/07/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# IMPORTING OUR DATASET
+```{r}
+
+path<-"http://bit.ly/CarreFourDataset" 
+
+Dataset<-read.csv(path, sep = ",", dec = ".",row.names = 1)
+
+head(Dataset)
+```
+```{r}
+feature <- Dataset
+library(dplyr)
+```
+
+
+
+
+
+# Label encoding the categorical column Gender
+```{r}
+
+Dataset$Gender <- ifelse(Dataset$Gender == "Male",1,2)
+table(Dataset$Gender)
+
+```
+# label encoding the customer type column
+```{r}
+
+Dataset$Customer.type <- ifelse(Dataset$Customer.type == "Member",1,2)
+table(Dataset$Customer.type)
+
+```
+# label encoding the payment column
+```{r}
+
+Dataset$Payment <- as.numeric(Dataset$Payment)
+table(Dataset$Payment)
+
+```
+# label encoding the product line column
+```{r}
+ 
+Dataset$Product.line <- as.numeric(Dataset$Product.line)
+table(Dataset$Product.line)
+
+```
+
+# label encoding the branch column
+```{r}
+
+Dataset$Branch <- as.numeric(Dataset$Branch)
+table(Dataset$Branch)
+
+```
+
+
+```{r}
+data2 <- select(Dataset, c(2,3,5,6,7,8,9,11,13,14,15))
+```
+
+
+```{r}
+head(data2)
+```
+```{r}
+data2 <- data2[ , unlist(lapply(data2, is.numeric))]  
+```
+
+
+```{r}
+
+
+pca <- prcomp(data2, center = TRUE, scale. = TRUE)
+summary(pca)
+```
+
+##  PCA is not suitable for this data since some principal components do not convey most of the information of the data hence we can use tnse as an alternative method
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

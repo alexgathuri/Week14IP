@@ -1,0 +1,79 @@
+---
+title: "Feature selection"
+author: "Alex"
+date: "16/07/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+# Feature Selection
+```{r}
+path<-"http://bit.ly/CarreFourDataset" 
+
+Dataset<-read.csv(path, sep = ",", dec = ".",row.names = 1)
+Dataset<-Dataset[-4] 
+head(Dataset,3)
+```
+# Installing and loading our caret package
+```{r}
+suppressWarnings(
+        suppressMessages(if
+                         (!require(caret, quietly=TRUE))
+                install.packages("caret")))
+library(caret)
+```
+
+
+# Installing and loading the corrplot package for plotting
+```{r}
+suppressWarnings(
+        suppressMessages(if
+                         (!require(corrplot, quietly=TRUE))
+                install.packages("corrplot")))
+library(corrplot)
+```
+
+# Calculating the correlation matrix
+
+
+```{r}
+library(dplyr)
+```
+```{r}
+head(Dataset)
+```
+
+
+```{r}
+dataset2 <- select(Dataset, c(5, 10,  12, 13, 14))
+
+correlationMatrix <- cor(dataset2)
+
+
+highlyCorrelated <- findCorrelation(correlationMatrix, cutoff=0.75)
+
+
+highlyCorrelated
+
+names(Dataset[,highlyCorrelated])
+```
+```{r}
+final_features <- dataset2[-highlyCorrelated]
+```
+
+
+```{r}
+
+
+library(corrplot)
+
+par(mfrow = c(1, 2))
+
+corrplot(correlationMatrix, order = "hclust")
+corrplot(cor(final_features), order = "hclust")
+```
+# Conclusion
+
+## The selected features that contribute most of the information in the dataset are  Rating, Quantity, Total, cogs and gross income
+
+

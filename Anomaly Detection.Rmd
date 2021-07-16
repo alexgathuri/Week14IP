@@ -1,0 +1,77 @@
+---
+title: "Anomaly Detection"
+author: "Alex"
+date: "15/07/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r}
+
+library(tidyverse)
+library(anomalize)
+library(dplyr)
+```
+
+
+
+
+```{r}
+
+path <-"http://bit.ly/CarreFourSalesDataset"
+
+anomaly <-read.csv(path)
+
+head(anomaly)
+```
+
+
+
+
+
+# Converting date
+```{r}
+anomaly$Date<- as.Date(anomaly$Date,format = "%m/%d/%Y")
+anomaly[["Date"]] <- as.POSIXct(anomaly$Date)
+```
+
+# converting into a tibble
+```{r}
+
+library(tibbletime)
+
+```
+
+
+
+# Summary
+```{r}
+summary(anomaly)
+```
+```{r}
+library(tidyverse)
+library(anomalize)
+library(dplyr)
+
+```
+```{r}
+library(Rcpp)
+```
+
+
+```{r}
+anomaly <- anomaly %>%
+tibbletime::as_tbl_time(index = Date)
+
+```
+
+
+
+
+
+
+
+
+
+
+
